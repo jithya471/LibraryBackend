@@ -8,5 +8,6 @@ interface UserServiceInterface {
     public abstract List<User> viewUsers();
     public abstract User signUp(User userDetails);
     public abstract User logIn(User userDetails);
+    public abstract User singleUser(String userId);
     
 }
