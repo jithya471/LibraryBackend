@@ -7,6 +7,7 @@ import lombok.Data;
 
 @Data
 @Document(collection = "book") 
+
 public class Book {
     @Id
     private String id;

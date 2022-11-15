@@ -18,7 +18,7 @@ import com.library.library.Service.BookServiceImpl;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/book")
 public class BookController {
 
     @Autowired

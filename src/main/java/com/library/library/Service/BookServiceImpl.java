@@ -7,13 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.library.library.Model.Book;
+import com.library.library.Model.PreviousId;
 import com.library.library.Repository.BookRepository;
+import com.library.library.Repository.PreviousIdRepository;
 
 @Component
 public class BookServiceImpl implements BookServiceInterface{
     
     @Autowired
-    public BookRepository bookRepository;
+    private BookRepository bookRepository;
+
+    @Autowired
+    private PreviousIdRepository previousIdRepository;
 
     @Override
     public Book addBook(Book bookDetails){
@@ -22,21 +27,34 @@ public class BookServiceImpl implements BookServiceInterface{
             return null;
         }
 
+        PreviousId previousId = previousIdRepository.findByType("book");
+
+        Integer previousBookId = previousId.getPreviousId();
+
+        if(previousBookId<9){
+            bookDetails.setId("BN00" + ++previousBookId);
+        }
+        else{
+            bookDetails.setId("BN0" + ++previousBookId);
+        }
+        previousId.setPreviousId(previousBookId);
+        previousIdRepository.save(previousId);
         return bookRepository.save(bookDetails);
     }
 
         public Book editBook(String bookId, Book bookDetails) {
             Optional<Book> optionalBook = bookRepository.findById(bookId);
-            Book book =optionalBook.get();
-            if(book == null){
+            if(!optionalBook.isPresent()){
                 return null;
             }
 
-            book.setBookName(bookDetails.getBookName());
-            book.setAuthor(bookDetails.getAuthor());
-            book.setIsbn(bookDetails.getIsbn());
-            book.setBalCopies(bookDetails.getBalCopies());
-            book.setTotalNo(bookDetails.getTotalNo());
+            Book bookSaved = optionalBook.get();
+            //updating each field
+            bookSaved.setBookName(bookDetails.getBookName());
+            bookSaved.setAuthor(bookDetails.getAuthor());
+            bookSaved.setIsbn(bookDetails.getIsbn());
+            bookSaved.setBalCopies(bookDetails.getBalCopies());
+            bookSaved.setTotalNo(bookDetails.getTotalNo());
             return bookRepository.save(bookDetails);
         }
 
