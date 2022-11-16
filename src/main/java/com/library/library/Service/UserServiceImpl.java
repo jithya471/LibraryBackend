@@ -7,8 +7,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.library.library.Model.Book;
+import com.library.library.Model.Order;
 import com.library.library.Model.PreviousId;
 import com.library.library.Model.User;
+import com.library.library.Repository.BookRepository;
 import com.library.library.Repository.PreviousIdRepository;
 import com.library.library.Repository.UserRepository;
 
@@ -20,6 +23,12 @@ public class UserServiceImpl implements UserServiceInterface{
 
     @Autowired
     private PreviousIdRepository  previousIdRepository;
+
+    @Autowired
+    private BookRepository bookRepository;
+
+    @Autowired
+    Order order;
 
     @Override
         public List<User> viewUsers(){
@@ -47,6 +56,7 @@ public class UserServiceImpl implements UserServiceInterface{
        
         previousId.setPreviousId(previousUserId);
         previousIdRepository.save(previousId);
+        userDetails.setRole("user");
         return userRepository.save(userDetails);
 
         }
@@ -67,6 +77,33 @@ public class UserServiceImpl implements UserServiceInterface{
                 return null;
             }
             return optionalUser.get();
+        }
+
+        public User checkOut(String userId, String bookId) {
+            User user = userRepository.findById(bookId).get();
+
+            List<Order> orders = user.getOrders();
+
+            if(orders.size()>1){
+                return null;
+            }
+
+            order.setBookId(bookId);
+            order.setCheckoutDate(new Date());
+
+            orders.add(order);
+
+            user.setOrders(orders);
+
+            Book book = bookRepository.findById(bookId).get();
+
+            Integer copiesAvailable = book.getBalCopies();
+
+            book.setBalCopies(--copiesAvailable);
+
+            bookRepository.save(book);
+
+            return userRepository.save(user);
         }
     }
 

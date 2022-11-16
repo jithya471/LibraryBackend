@@ -29,13 +29,13 @@ public class BookController {
         return bookServiceImpl.addBook(bookDetails);
     }
 
-    @PatchMapping("/edit/id/{id}")
-    public Book editBook(@PathVariable("id") String id, @RequestBody Book editBookDetails){
+    @PatchMapping("/edit/bookId/{bookId}")
+    public Book editBook(@PathVariable("bookId") String id, @RequestBody Book editBookDetails){
         return bookServiceImpl.editBook(id, editBookDetails); 
     }
 
-    @DeleteMapping("/deletebook/{id}")
-    public Boolean delBook(@PathVariable("id") String bookId){
+    @DeleteMapping("/deletebook/{bookId}")
+    public Boolean delBook(@PathVariable("bookId") String bookId){
         return bookServiceImpl.delBook(bookId);
     }
 
@@ -44,8 +44,8 @@ public class BookController {
         return bookServiceImpl.viewAllBooks();
     }
 
-    @GetMapping("/getbook/{id}")
-    public Book getBook(@PathVariable("id") String bookId){
+    @GetMapping("/getbook/{bookId}")
+    public Book getBook(@PathVariable("bookId") String bookId){
         return bookServiceImpl.getBook(bookId);
     }
 }

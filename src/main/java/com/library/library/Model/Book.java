@@ -14,8 +14,8 @@ public class Book {
     private String isbn;
     private String bookName;
     private String author;
-    private String totalNo;
-    private String balCopies;
+    private Integer totalNo;
+    private Integer balCopies;
     private String image;
     private String role;
 }

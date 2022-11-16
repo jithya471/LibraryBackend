@@ -1,12 +1,14 @@
 package com.library.library.Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
 
 @Data
-
 @Document(collection = "user")
 public class User {
     @Id
@@ -18,5 +20,5 @@ public class User {
     private String gender;
     private String password;
     private String role;
-    
+    private List<Order> orders = new ArrayList<>();
 }
