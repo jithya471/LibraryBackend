@@ -23,22 +23,33 @@ public class UserController {
     private UserServiceImpl userServiceImpl;
 
     @PostMapping("/signup")
-    public User signUp(@RequestBody User userDetails){
+    public User signUp(@RequestBody User userDetails) {
         return userServiceImpl.signUp(userDetails);
     }
 
     @PostMapping("/login")
-    public User logIn(@RequestBody User userDetails){
+    public User logIn(@RequestBody User userDetails) {
         return userServiceImpl.logIn(userDetails);
     }
 
     @GetMapping("/all-users")
-    public List<User> viewUsers(){
+    public List<User> viewUsers() {
         return userServiceImpl.viewUsers();
     }
 
     @PutMapping("/checkout/{userId}/{bookId}")
-    public User checkOut(@PathVariable("userId") String userId, @PathVariable("bookId") String bookId ){
+    public User checkOut(@PathVariable("userId") String userId, @PathVariable("bookId") String bookId) {
         return userServiceImpl.checkOut(userId, bookId);
     }
+
+    @GetMapping("/getUser/{userId}")
+    public User singleUser(@PathVariable("userId") String userId) {
+        return userServiceImpl.singleUser(userId);
+    }
+
+    @PutMapping("/return/{userId}/{bookId}")
+    public User returnBook(@PathVariable("userId") String userId, @PathVariable("bookId") String bookId) {
+        return userServiceImpl.returnBook(userId, bookId);
+    }
+
 }

@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import com.library.library.Model.Book;
 import com.library.library.Model.Order;
 import com.library.library.Model.PreviousId;
@@ -80,7 +79,7 @@ public class UserServiceImpl implements UserServiceInterface{
         }
 
         public User checkOut(String userId, String bookId) {
-            User user = userRepository.findById(bookId).get();
+            User user = userRepository.findById(userId).get();
 
             List<Order> orders = user.getOrders();
 
@@ -105,5 +104,24 @@ public class UserServiceImpl implements UserServiceInterface{
 
             return userRepository.save(user);
         }
+
+        public User returnBook(String userId, String bookId) {
+                User user = userRepository.findById(userId).get();
+
+                List<Order> orders = user.getOrders();
+
+                orders.removeIf(book -> book.getBookId().equals(bookId));
+
+                order.setBookId(bookId);
+
+                Book book = bookRepository.findById(bookId).get();
+                Integer copiesAvailable = book.getBalCopies();
+                book.setBalCopies(++copiesAvailable);
+                bookRepository.save(book);
+
+            return userRepository.save(user);
+        }
+
+        
     }
 
