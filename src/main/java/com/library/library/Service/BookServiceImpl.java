@@ -12,8 +12,8 @@ import com.library.library.Repository.BookRepository;
 import com.library.library.Repository.PreviousIdRepository;
 
 @Component
-public class BookServiceImpl implements BookServiceInterface{
-    
+public class BookServiceImpl implements BookServiceInterface {
+
     @Autowired
     private BookRepository bookRepository;
 
@@ -21,9 +21,9 @@ public class BookServiceImpl implements BookServiceInterface{
     private PreviousIdRepository previousIdRepository;
 
     @Override
-    public Book addBook(Book bookDetails){
+    public Book addBook(Book bookDetails) {
         Book bookName = bookRepository.findByBookName(bookDetails.getBookName());
-        if(bookName != null){
+        if (bookName != null) {
             return null;
         }
 
@@ -31,10 +31,9 @@ public class BookServiceImpl implements BookServiceInterface{
 
         Integer previousBookId = previousId.getPreviousId();
 
-        if(previousBookId<9){
+        if (previousBookId < 9) {
             bookDetails.setId("BN00" + ++previousBookId);
-        }
-        else{
+        } else {
             bookDetails.setId("BN0" + ++previousBookId);
         }
         previousId.setPreviousId(previousBookId);
@@ -42,42 +41,42 @@ public class BookServiceImpl implements BookServiceInterface{
         return bookRepository.save(bookDetails);
     }
 
-        public Book editBook(String bookId, Book bookDetails) {
-            Optional<Book> optionalBook = bookRepository.findById(bookId);
-            if(!optionalBook.isPresent()){
-                return null;
-            }
-
-            Book bookSaved = optionalBook.get();
-            //updating each field
-            bookSaved.setBookName(bookDetails.getBookName());
-            bookSaved.setAuthor(bookDetails.getAuthor());
-            bookSaved.setIsbn(bookDetails.getIsbn());
-            bookSaved.setBalCopies(bookDetails.getBalCopies());
-            bookSaved.setTotalNo(bookDetails.getTotalNo());
-            return bookRepository.save(bookDetails);
+    public Book editBook(String bookId, Book bookDetails) {
+        Optional<Book> optionalBook = bookRepository.findById(bookId);
+        if (!optionalBook.isPresent()) {
+            return null;
         }
 
-        public Boolean delBook(String bookId){
-            if(!bookRepository.existsById(bookId))
-                return false;
-            
-                bookRepository.deleteById(bookId);
-                return true;
-        }
+        Book bookSaved = optionalBook.get();
+        // updating each field
+        bookSaved.setBookName(bookDetails.getBookName());
+        bookSaved.setAuthor(bookDetails.getAuthor());
+        bookSaved.setIsbn(bookDetails.getIsbn());
+        bookSaved.setBalCopies(bookDetails.getBalCopies());
+        bookSaved.setTotalNo(bookDetails.getTotalNo());
+        return bookRepository.save(bookDetails);
+    }
 
-        @Override
-        public List<Book> viewAllBooks(){
-            return bookRepository.findAll();
-        }
+    public Boolean delBook(String bookId) {
+        if (!bookRepository.existsById(bookId))
+            return false;
 
-        @Override
-        public Book getBook(String bookId){
-            Optional<Book> optionalBook = bookRepository.findById(bookId);
-            if(!optionalBook.isPresent()){
-                return null;
-            }
-            return optionalBook.get();
+        bookRepository.deleteById(bookId);
+        return true;
+    }
+
+    @Override
+    public List<Book> viewAllBooks() {
+        return bookRepository.findAll();
+    }
+
+    @Override
+    public Book getBook(String bookId) {
+        Optional<Book> optionalBook = bookRepository.findById(bookId);
+        if (!optionalBook.isPresent()) {
+            return null;
         }
-        
+        return optionalBook.get();
+    }
+
 }
