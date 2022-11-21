@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserServiceInterface{
     private BookRepository bookRepository;
 
     @Autowired
-    Order order;
+    private Order order;
 
     @Override
         public List<User> viewUsers(){
